@@ -1,6 +1,5 @@
 from flask import Flask , render_template , request , jsonify
-import text_sentiment_prediction
-from predict_bot_response import *
+import prediction
 
 app = Flask(__name__)
 
@@ -21,7 +20,7 @@ def predict():
     else:
 
         # calling the predict method from prediction.py module
-        sentiment , path = text_sentiment_prediction.predict(review)
+        sentiment , path = prediction.predict(review)
         response = {'status' : 'success',
                     'message' : 'Got it',
                     'sentiment' : sentiment,
@@ -44,33 +43,15 @@ def save():
     data_entry = date + "," + product + "," + review + "," + sentiment
 
     # open the file in the 'append' mode
-    f = open('./static/assets/datafiles/data_entry.csv' , 'a')
+    with open("./static/assets/datafiles/reviews.csv", "a") as f:
+        f.write(data_entry)
 
     # Log the data in the file
-    f.write(data_entry + '\n')
-
-    # close the file
-    f.close()
 
     # return a success message
     return jsonify({'status' : 'success' , 
                     'message' : 'Data Logged'})
 
 
-# writing api for chatbot
-@app.route("/chat", methods=["POST"])
-def bot():
-    # Get User Input
-    input_text = request.json.get("user_bot_input_text")
-   
-    # Call the method to get bot response
-    bot_res = bot_response(input_text)
-
-    response = {
-            "bot_response": bot_res
-        }
-
-    return jsonify(response)
-     
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__  ==  "__main__":
+    app.run(debug = True)

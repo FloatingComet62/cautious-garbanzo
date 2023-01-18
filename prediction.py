@@ -5,14 +5,14 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import load_model
 
-train_data = pd.read_csv("./static/assets/data_files/updated_product_dataset.csv")
+train_data = pd.read_csv("./static/assets/datafiles/updated_product_dataset.csv")
 training_sentences = []
 
 for i in range(len(train_data)):
     sentence = train_data.loc[i, "Text"]
     training_sentences.append(sentence)
 
-model = load_model("./static/assets/model_files/sentiment_analysis_model.h5")
+model = load_model("./static/assets/model/sentiment_analysis_model.h5")
 
 vocab_size = 40000
 max_length = 100
